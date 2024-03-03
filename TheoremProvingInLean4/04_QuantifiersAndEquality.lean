@@ -84,6 +84,7 @@ example : (∀ x, p x → r) ↔ (∃ x, p x) → r :=
     (λ haxpxr ⟨w, hpw⟩ => haxpxr w hpw)
     (λ hexpxr w hpw => hexpxr ⟨w, hpw⟩)
 
+-- solution hint from the book
 example (a : α) : (∃ x, p x → r) ↔ (∀ x, p x) → r :=
   Iff.intro
     (λ ⟨w, hpxr⟩ hax => w |> hax |> hpxr)
