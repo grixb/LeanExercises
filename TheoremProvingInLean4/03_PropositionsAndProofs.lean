@@ -19,9 +19,9 @@ example : p ∧ q ↔ q ∧ p :=
 example : p ∨ q ↔ q ∨ p :=
   Iff.intro
   (λ (hpq : p ∨ q) =>
-    show q ∨ p from hpq.elim Or.inr Or.inl)
+    show q ∨ p from hpq.elim .inr .inl)
   (λ (hqp : q ∨ p) =>
-    show p ∨ q from hqp.elim Or.inr Or.inl)
+    show p ∨ q from hqp.elim .inr .inl)
 
 -- associativity of ∧ and ∨
 example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) :=
