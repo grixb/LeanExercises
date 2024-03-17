@@ -126,4 +126,79 @@ example : (¬p ∨ q) → (p → q) := by
     assumption
   | inr hq => exact hq
 
+example : p ∨ False ↔ p := by
+  apply Iff.intro
+  · intro
+    | .inl hp => assumption;
+    | .inr False => apply False.elim
+  · intro hp
+    apply Or.inl; assumption
+
+example : p ∧ False ↔ False := by
+  apply Iff.intro
+  · intro ⟨_, False⟩; exact False
+  · intro False
+    apply And.intro
+    apply False.elim
+    exact False
+
+example : (p → q) → (¬q → ¬p) := by
+  intro hpq hnq hp
+  have := hpq hp
+  apply hnq
+  assumption
+
+open Classical
+
+example : (p → q ∨ r) → ((p → q) ∨ (p → r)) := by
+  intro hpqr
+  apply byCases
+  · intro (hp : p)
+    have := hpqr hp
+    apply Or.elim; assumption
+    case left =>
+      intro hq; apply Or.inl
+      intro; exact hq
+    case right =>
+      intro hr; apply Or.inr
+      intro; exact hr
+  · intro (hnp : ¬p)
+    apply Or.inl; intro hp
+    have := hnp hp
+    apply False.elim
+    assumption
+
+example : ¬(p ∧ q) → ¬p ∨ ¬q := by
+  intro hnpq
+  apply byCases
+  · intro (hp : p)
+    apply Or.inr; intro hq
+    exact show False by
+      apply hnpq
+      exact ⟨hp, hq⟩
+  · intro (hnp : ¬p)
+    apply Or.inl; assumption
+
+example : ¬(p → q) → p ∧ ¬q := by
+  intro hnpq
+  apply byCases
+  · intro (hq : q)
+    have := by
+      apply hnpq
+      intro; exact hq
+    apply False.elim
+    assumption
+  · intro (hnq : ¬q)
+    apply byCases
+    · intro (hp : p)
+      exact ⟨hp, hnq⟩
+    · intro (hnp : ¬p)
+      have := by
+        apply hnpq
+        intro hp
+        apply False.elim
+        apply hnp; assumption
+      apply False.elim
+      assumption
+
 section end
